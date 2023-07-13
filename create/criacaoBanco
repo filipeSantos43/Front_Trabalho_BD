@@ -1,0 +1,81 @@
+--Lembrando que isso foi executado após a criação do schema de voos ---
+CREATE TABLE Cancellation
+(
+    Code VARCHAR(10) PRIMARY KEY,
+    Reason VARCHAR(255)
+);
+
+CREATE TABLE Flights
+(
+    Flight_Number VARCHAR(10),
+    Tail_Number VARCHAR(10),
+    Departure_Time VARCHAR(10),
+    Departure_Delay VARCHAR(10),
+    Taxi_Out VARCHAR(10),
+    Wheels_Off VARCHAR(10),
+    Scheduled_Time VARCHAR(10),
+    Elapsed_Time VARCHAR(10),
+    Air_Time VARCHAR(10),
+    Distance VARCHAR(10),
+    Wheels_On VARCHAR(10),
+    Taxi_In VARCHAR(10),
+    Arrival_Time VARCHAR(10),
+    Arrival_Delay VARCHAR(10),
+    Diverted VARCHAR(10),
+    Air_System_Delay VARCHAR(10),
+    Security_Delay VARCHAR(10),
+    Airline_Delay VARCHAR(10),
+    Late_Aircraft_Delay VARCHAR(10),
+    Weather_Delay VARCHAR(10),
+    Year VARCHAR(10),
+    Day VARCHAR(10),
+    Day_Of_Week VARCHAR(10),
+    Month VARCHAR(10),
+    Airline_IATA_CODE VARCHAR(10),
+    Cancellation_CODE VARCHAR(10),
+    PRIMARY KEY (Flight_Number, Tail_Number),
+    FOREIGN KEY (Airline_IATA_CODE) REFERENCES Airline(IATA_CODE),
+    FOREIGN KEY (Cancellation_CODE) REFERENCES Cancellation(Code)
+);
+
+CREATE TABLE FlightsAirports
+(
+    Flights_Flight_Number VARCHAR(10),
+    Flights_Tail_Number VARCHAR(10),
+    Airports_IATA_Code VARCHAR(10),
+    Scheduled_Departure TIME,
+    Schedule_Arrival TIME,
+    FOREIGN KEY (Flights_Flight_Number) REFERENCES Flights(Flight_Number),
+    FOREIGN KEY (Airports_IATA_Code) REFERENCES Airports(IATA_CODE)
+);
+
+create table City
+(
+    City    varchar(255) not null
+        primary key,
+    State   varchar(255) ,
+    Country varchar(255)
+);
+
+create table Airports
+(
+    IATA_CODE varchar(10)  not null
+        primary key,
+    Airport   varchar(255) null,
+    Latitude  float        null,
+    Longitude float        null,
+    City      varchar(255) null,
+    constraint Airports_ibfk_1
+        foreign key (City) references City (City)
+);
+
+create index City
+    on Airports (City);
+
+
+create table Airline
+(
+    IATA_CODE varchar(10)  not null
+        primary key,
+    Airline   varchar(255)
+);
